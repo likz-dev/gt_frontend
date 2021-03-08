@@ -1,13 +1,44 @@
 <template>
+  <v-container>
     <vue-scheduler-lite
       :schedule-data="scData"
       :setting="scSetting"
       @add-event="addEvent"
     />
+
+    <v-divider/>
+
+    <v-row style="margin-top: 16px">
+      <v-col cols="6">
+        <v-text-field
+          v-model="bookingName"
+          label="Name"
+          outlined
+          clearable
+        ></v-text-field>
+      </v-col>
+      <v-col cols="6">
+        <v-text-field
+          v-model="bookingTimeString"
+          label="Timing"
+          readonly
+          outlined
+        ></v-text-field>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col cols="12" align-self="end" style="margin-top: -32px">
+        <v-btn color="primary" style="float: right">
+          Submit
+        </v-btn>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 <script>
 import { vueSchedulerLite } from 'assets/js/vue-scheduler-lite'
-import { sampleData, sampleSetting } from 'assets/js/scheduler_app'
+import { sampleData, sampleSetting } from 'assets/js/sample_data'
+import helper from 'assets/js/helper'
 
 export default {
   components: {
@@ -16,11 +47,14 @@ export default {
   data () {
     return {
       scData: sampleData,
-      scSetting: sampleSetting
+      scSetting: sampleSetting,
+      bookingName: '',
+      bookingTimeString: ''
     }
   },
   mounted () {
     console.log('mounted!!')
+    console.log(helper.getCurrentDateTime())
     const polyfillScript = document.createElement('script')
     polyfillScript.setAttribute('src', 'polyfill.js')
     document.head.appendChild(polyfillScript)
@@ -54,6 +88,8 @@ export default {
       console.log('RowIndex:' + rowIndex)
       console.log('StartDate:' + startDate)
       console.log('EndDate:' + endDate)
+
+      this.bookingTimeString = `${startDate} to ${endDate}`
     },
     moveEvent (status, newStartDate, newEndDate) {
       console.log('------')

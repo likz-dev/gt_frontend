@@ -555,7 +555,7 @@ export const vueSchedulerLite = {
         return false
       }
 
-      // and check this div time bussiness hour
+      // and check this div time business hour
       const weekDay = thisDate.getDay()
       const businessHour = this.scheduleData[rowIndex].businessHours[weekDay]
       if (businessHour.start === '00:00' && businessHour.end === '24:00') {
@@ -563,7 +563,7 @@ export const vueSchedulerLite = {
         return true
       }
 
-      // has bussiness hour
+      // has business hour
       const businessStartTime = businessHour.start.replace(':', '')
       const businessEndTime = businessHour.end.replace(':', '')
       const dateMod = n % oneDayCnt

@@ -28,6 +28,10 @@ describe('FacilitiesScheduler', () => {
     const scTimeComponents = wrapper.findAll('.sc-time')
     expect(scTimeComponents).toHaveLength(175)
 
+    // Existing business hours
+    const cantResComponents = wrapper.findAll('.cant-res')
+    expect(cantResComponents).toHaveLength(36)
+
     // 3 rooms
     const titleComponents = wrapper.findAll('.title')
     expect(titleComponents).toHaveLength(3)

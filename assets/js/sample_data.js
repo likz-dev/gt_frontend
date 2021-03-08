@@ -6,6 +6,8 @@
 //  * @see https://github.com/linmasahiro/vue-scheduler-lite
 //  */
 //
+import helper from 'assets/js/helper'
+
 const businessHours = [{
   start: '12:00',
   end: '24:00'
@@ -35,10 +37,19 @@ const businessHours = [{
   end: '24:00'
 }]
 
+function getBusinessHours () {
+  const weekDay = helper.getCurrentDay()
+  businessHours[weekDay] = {
+    start: helper.getCurrentTime(),
+    end: '24:00'
+  }
+  return businessHours
+}
+
 export const sampleData = [{
   title: 'Novena',
   noBusinessDate: [],
-  businessHours,
+  businessHours: getBusinessHours(),
   schedule: [{
     text: 'Mr.A reserved',
     start: '2020/04/21 06:00',
@@ -62,7 +73,7 @@ export const sampleData = [{
 {
   title: 'Dhoby Ghaut',
   noBusinessDate: [],
-  businessHours,
+  businessHours: getBusinessHours(),
   schedule: [{
     text: 'Mr.C reserved',
     start: '2020/04/20 12:00',
@@ -76,11 +87,11 @@ export const sampleData = [{
 {
   title: 'Marina',
   noBusinessDate: [],
-  businessHours,
+  businessHours: getBusinessHours(),
   schedule: [{
     text: 'Mr.D reserved',
-    start: '2020/04/20 12:00',
-    end: '2020/04/20 18:00',
+    start: '2021/03/8 12:00',
+    end: '2021/03/8 20:00',
     isMe: false,
     data: {
       something: 'something'
@@ -90,8 +101,8 @@ export const sampleData = [{
 ]
 
 export const sampleSetting = {
-  startDate: '2021/04/20',
-  endDate: '2021/04/26',
+  startDate: '2021/03/08',
+  endDate: '2021/03/14',
   weekdayText: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
   unit: 60, // Minutes
   borderW: 1, // Px
