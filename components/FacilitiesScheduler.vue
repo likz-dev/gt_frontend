@@ -1,13 +1,13 @@
 <template>
-    <vue-scheduler-lite
-      :schedule-data="scData"
-      :setting="scSetting"
-      @add-event="addEvent"
-    />
+  <vue-scheduler-lite
+    :schedule-data="scData"
+    :setting="scSetting"
+    @add-event="addEvent"
+  />
 </template>
 <script>
-import { vueSchedulerLite } from 'assets/js/vue-scheduler-lite'
-import { sampleData, sampleSetting } from 'assets/js/scheduler_app'
+import { vueSchedulerLite } from '@/assets/js/vue-scheduler-lite'
+// import { sampleData, sampleSetting } from '@/assets/js/scheduler_app'
 
 export default {
   components: {
@@ -15,8 +15,8 @@ export default {
   },
   data () {
     return {
-      scData: sampleData,
-      scSetting: sampleSetting
+      scData: [],
+      scSetting: {}
     }
   },
   mounted () {
@@ -49,11 +49,7 @@ export default {
       }
     },
     addEvent (rowIndex, startDate, endDate) {
-      console.log('------')
-      console.log('AddEvent:')
-      console.log('RowIndex:' + rowIndex)
-      console.log('StartDate:' + startDate)
-      console.log('EndDate:' + endDate)
+      this.$emit('add-event', rowIndex, startDate, endDate)
     },
     moveEvent (status, newStartDate, newEndDate) {
       console.log('------')
