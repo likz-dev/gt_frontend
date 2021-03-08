@@ -37,9 +37,7 @@ const businessHours = [{
 
 export const sampleData = [{
   title: 'Novena',
-  noBusinessDate: [
-    // '2020/04/20'
-  ],
+  noBusinessDate: [],
   businessHours,
   schedule: [{
     text: 'Mr.A reserved',
@@ -83,7 +81,7 @@ export const sampleData = [{
     text: 'Mr.D reserved',
     start: '2020/04/20 12:00',
     end: '2020/04/20 18:00',
-    isMe: true,
+    isMe: false,
     data: {
       something: 'something'
     }

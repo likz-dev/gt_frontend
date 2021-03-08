@@ -655,6 +655,7 @@ export const vueSchedulerLite = {
       const addMinutes2 = keyIndex * this.settingData.unit
       const newStartDateObj = this.addMinutes(new Date(this.settingData.startDate), addMinutes)
       const newEndDateObj = this.addMinutes(new Date(this.settingData.startDate), addMinutes2)
+      this.deleteAllIsMe()
       this.scheduleData[rowIndex].schedule.push({
         text: 'New',
         start: this.datetimeFormatter(newStartDateObj),
@@ -662,6 +663,13 @@ export const vueSchedulerLite = {
         isMe: true
       })
       this.isSelectingIndex = (this.scheduleData[this.isSelectingRowIndex].schedule.length - 1)
+    },
+
+    deleteAllIsMe () {
+      for (let i = 0; i < this.scheduleData.length; i++) {
+        const data = this.scheduleData[i].schedule
+        this.scheduleData[i].schedule = data.filter(e => !e.isMe)
+      }
     },
     /**
      * New event adjust event
