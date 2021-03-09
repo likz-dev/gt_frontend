@@ -6,6 +6,7 @@
       app
       dark
       color="#292D3C"
+      style="z-index: 100"
     >
       <v-toolbar-title v-text="title"/>
     </v-app-bar>

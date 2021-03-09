@@ -9,24 +9,34 @@
       @delete-event="deleteEvent"
     />
 
-    <v-divider/>
+    <v-divider />
 
     <v-row style="margin-top: 16px">
       <v-col cols="6">
         <v-text-field
           v-model="bookingName"
-          label="Name"
+          label="Meeting Name"
           outlined
           clearable
-        ></v-text-field>
+        />
       </v-col>
       <v-col cols="6">
         <v-text-field
-          v-model="bookingTimeString"
-          label="Timing"
+          v-model="selectedMeetingRoom"
+          label="Meeting Room"
           readonly
           outlined
-        ></v-text-field>
+        />
+      </v-col>
+    </v-row>
+    <v-row style="margin-top: -32px">
+      <v-col cols="6">
+        <v-text-field
+          v-model="bookingTimeString"
+          label="Time"
+          readonly
+          outlined
+        />
       </v-col>
     </v-row>
     <v-row>
@@ -40,8 +50,7 @@
 </template>
 <script>
 import { vueSchedulerLite } from 'assets/js/vue-scheduler-lite'
-import { schedulerData, schedulerSettings } from 'assets/js/sample_data'
-import helper from 'assets/js/helper'
+import schedulerHelper from 'assets/js/scheduler_helper'
 
 export default {
   components: {
@@ -49,20 +58,78 @@ export default {
   },
   data () {
     return {
-      scData: schedulerData,
-      scSetting: schedulerSettings,
+      scData: [],
+      scSetting: {},
+      meetingRooms: [],
       bookingName: '',
-      bookingTimeString: ''
+      bookingTimeString: '',
+      selectedMeetingRoom: '',
+      apiResponse: {
+        startDate: '2021/03/09',
+        endDate: '2021/03/15',
+        facilities: {
+          Novena: {
+            description: {
+              level: 1,
+              pax: 4
+            },
+            schedule: [{
+              text: 'Mr.A reserved',
+              start: '2021/03/09 18:00',
+              end: '2021/03/09 20:00',
+              isMe: false
+            },
+            {
+              text: 'Mr.B reserved',
+              start: '2021/03/10 15:00',
+              end: '2021/03/10 17:00',
+              isMe: false
+            }
+            ]
+          },
+          'Dhoby Ghaut': {
+            description: {
+              level: 1,
+              pax: 1
+            },
+            schedule: [{
+              text: 'Mr.C reserved',
+              start: '2021/03/9 12:00',
+              end: '2021/03/9 17:00',
+              isMe: false
+            }]
+          },
+          Marina: {
+            description: {
+              level: 1,
+              pax: 8
+            },
+            schedule: [{
+              text: 'Mr.D reserved',
+              start: '2021/03/10 12:00',
+              end: '2021/03/10 18:00',
+              isMe: false
+            }]
+          }
+        }
+      }
     }
   },
+  created () {
+    this.populateFacilities(this.apiResponse)
+  },
   mounted () {
-    console.log('mounted!!')
-    console.log(helper.getCurrentDateTime())
+    // Mount the required javascript file for scheduler
     const polyfillScript = document.createElement('script')
     polyfillScript.setAttribute('src', 'polyfill.js')
     document.head.appendChild(polyfillScript)
   },
   methods: {
+    populateFacilities (apiResponse) {
+      this.scData = schedulerHelper.getSchedulerData(apiResponse)
+      this.scSetting = schedulerHelper.getSchedulerSettings(apiResponse)
+      this.meetingRooms = Object.keys(apiResponse.facilities)
+    },
     dateClickEvent (date) {
       console.log('------')
       console.log('DateClickEvent:')
@@ -93,11 +160,13 @@ export default {
       console.log('EndDate:' + endDate)
 
       this.bookingTimeString = `${startDate} to ${endDate}`
+      this.selectedMeetingRoom = this.meetingRooms[rowIndex]
     },
-    moveEvent (status, newStartDate, newEndDate) {
+    moveEvent (status, rowIndex, newStartDate, newEndDate) {
       console.log('------')
       console.log('MoveEvent:')
       if (status === 1) {
+        console.log('rowIndex:' + rowIndex)
         console.log('NewStartDate:' + newStartDate)
         console.log('NewEndDate:' + newEndDate)
       } else if (status === 2) {
@@ -106,6 +175,7 @@ export default {
         console.log('Not businessDay, can\'t move.')
       }
       this.bookingTimeString = `${newStartDate} to ${newEndDate}`
+      this.selectedMeetingRoom = this.meetingRooms[rowIndex]
     },
     editEvent (newStartDate, newEndDate) {
       console.log('------')
@@ -120,43 +190,7 @@ export default {
       console.log('Row:' + row)
       console.log('Index:' + index)
       this.bookingTimeString = ''
-    },
-    addNewRow () {
-      const newTitle = 'Room' + (this.scData.length + 1)
-      this.scData.push({
-        title: newTitle,
-        noBusinessDate: [],
-        businessHours: [{
-          start: '00:00',
-          end: '24:00'
-        },
-        {
-          start: '00:00',
-          end: '24:00'
-        },
-        {
-          start: '00:00',
-          end: '24:00'
-        },
-        {
-          start: '00:00',
-          end: '24:00'
-        },
-        {
-          start: '00:00',
-          end: '24:00'
-        },
-        {
-          start: '00:00',
-          end: '24:00'
-        },
-        {
-          start: '00:00',
-          end: '24:00'
-        }
-        ],
-        schedule: []
-      })
+      this.selectedMeetingRoom = ''
     }
   }
 }

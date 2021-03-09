@@ -825,7 +825,7 @@ export const vueSchedulerLite = {
             status = 1
           }
         }
-        this.$emit('move-event', status, targetData.start, targetData.end)
+        this.$emit('move-event', status, this.dragenterRowIndex, targetData.start, targetData.end)
       }
     },
     /**
