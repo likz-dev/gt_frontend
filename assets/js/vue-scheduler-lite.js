@@ -682,6 +682,7 @@ export const vueSchedulerLite = {
       const targetData = this.scheduleData[this.isSelectingRowIndex].schedule[
         targetIndex
       ]
+
       if (targetData) {
         const addMinutes = keyIndex * this.settingData.unit
         const newEndDateObj = this.addMinutes(
@@ -751,7 +752,7 @@ export const vueSchedulerLite = {
      */
     moveScheduleData (rowIndex, keyNo, unitCnt) {
       const targetData = this.scheduleData[rowIndex].schedule[keyNo]
-      if (targetData) {
+      if (targetData && targetData.isMe) {
         let status = 0
         let isBusinessFlag = true
         let isBusinessChecked = false
@@ -838,7 +839,7 @@ export const vueSchedulerLite = {
      */
     editScheduleData (rowIndex, keyNo, unitCnt) {
       const targetData = this.scheduleData[rowIndex].schedule[keyNo]
-      if (targetData) {
+      if (targetData && targetData.isMe) {
         const changeDatetimeText = (datetimeText) => {
           const addMinutes = unitCnt * this.settingData.unit
           const dateObj = new Date(datetimeText)
@@ -894,21 +895,25 @@ export const vueSchedulerLite = {
           <div :style="{height: padding-4 + 'px', 'border-bottom': '1px solid #333', 'background-color': 'white'}">
             <span>Rooms</span>
           </div>
+
           <div
             v-for="(row, index) in scheduleData"
             :key="index"
             :class="'timeline title'"
-            :style="{'height': settingData.rowH + 'px', 'align-content': 'middle', 'padding-top': '4px'}"
+            :style="{'height': settingData.rowH + 'px'}"
             @click="$emit('row-click-event', index, row.title)"
           >
-            <span style="cursor: pointer; font-size: 16px;">{{ row.title }}</span>
+            <div style="cursor: pointer; height: 64px">
+              <span style="font-size: 16px; margin-top: -4px; font-weight: bold;">{{ row.title }}</span>
+              <span style="font-size: 12px; margin-top: -32px; font-weight: normal;">Level {{row.description.level}}, Max Pax: {{row.description.pax}}</span>
+            </div>
           </div>
         </div>
       </div>
       <div class="sc-main-box" :style="{width: (100 - settingData.titleDivW) + '%'}">
         <div
           class="sc-main-scroll"
-          :style="{width: contentW + 'px'}"
+          :style="{width: contentW - 336 + 'px'}"
         >
           <div class="sc-main">
             <div
@@ -919,7 +924,7 @@ export const vueSchedulerLite = {
                 v-for="n in dateCnt"
                 :key="n"
                 class="sc-time"
-                :style="{width: dateDivW - 23 + 'px', cursor: 'pointer'}"
+                :style="{width: dateDivW - 47 + 'px', cursor: 'pointer'}"
                 @click="$emit('date-click-event', getHeaderDate(n-1))"
               >
                 {{ getHeaderDate(n - 1) }}
@@ -933,7 +938,7 @@ export const vueSchedulerLite = {
                 v-for="n in (dateCnt * 24)"
                 :key="n"
                 class="sc-time"
-                :style="{width: timeDivW + 'px'}"
+                :style="{width: timeDivW - 1 + 'px'}"
               >
                 {{ getHeaderTime(n - 1) }}
               </div>
@@ -970,6 +975,7 @@ export const vueSchedulerLite = {
                 :start-text="detail.start"
                 :end-text="detail.end"
                 :content-text="detail.text"
+                :description-text="row.description"
                 :unit-width="settingData.unitDivW"
                 :unit-height="settingData.rowH"
                 :title-div-width="settingData.titleDivW"

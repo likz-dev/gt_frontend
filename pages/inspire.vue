@@ -4,6 +4,9 @@
       :schedule-data="scData"
       :setting="scSetting"
       @add-event="addEvent"
+      @move-event="moveEvent"
+      @edit-event="editEvent"
+      @delete-event="deleteEvent"
     />
 
     <v-divider/>
@@ -37,7 +40,7 @@
 </template>
 <script>
 import { vueSchedulerLite } from 'assets/js/vue-scheduler-lite'
-import { sampleData, sampleSetting } from 'assets/js/sample_data'
+import { schedulerData, schedulerSettings } from 'assets/js/sample_data'
 import helper from 'assets/js/helper'
 
 export default {
@@ -46,8 +49,8 @@ export default {
   },
   data () {
     return {
-      scData: sampleData,
-      scSetting: sampleSetting,
+      scData: schedulerData,
+      scSetting: schedulerSettings,
       bookingName: '',
       bookingTimeString: ''
     }
@@ -102,18 +105,21 @@ export default {
       } else {
         console.log('Not businessDay, can\'t move.')
       }
+      this.bookingTimeString = `${newStartDate} to ${newEndDate}`
     },
     editEvent (newStartDate, newEndDate) {
       console.log('------')
       console.log('EditEvent:')
       console.log('NewStartDate:' + newStartDate)
       console.log('NewEndDate:' + newEndDate)
+      this.bookingTimeString = `${newStartDate} to ${newEndDate}`
     },
     deleteEvent (row, index) {
       console.log('------')
       console.log('DeleteEvent:')
       console.log('Row:' + row)
       console.log('Index:' + index)
+      this.bookingTimeString = ''
     },
     addNewRow () {
       const newTitle = 'Room' + (this.scData.length + 1)
