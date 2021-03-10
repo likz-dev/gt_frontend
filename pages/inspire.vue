@@ -69,10 +69,8 @@ export default {
         endDate: '2021/03/15',
         facilities: {
           Novena: {
-            description: {
-              level: 1,
-              pax: 4
-            },
+            level: 1,
+            pax: 4,
             schedule: [{
               text: 'Mr.A reserved',
               start: '2021/03/09 18:00',
@@ -88,10 +86,8 @@ export default {
             ]
           },
           'Dhoby Ghaut': {
-            description: {
-              level: 1,
-              pax: 1
-            },
+            level: 1,
+            pax: 1,
             schedule: [{
               text: 'Mr.C reserved',
               start: '2021/03/9 12:00',
@@ -100,10 +96,8 @@ export default {
             }]
           },
           Marina: {
-            description: {
-              level: 1,
-              pax: 8
-            },
+            level: 1,
+            pax: 8,
             schedule: [{
               text: 'Mr.D reserved',
               start: '2021/03/10 12:00',

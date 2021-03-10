@@ -52,7 +52,8 @@ const schedulerHelper = {
     for (const [key, value] of Object.entries(apiResponse.facilities)) {
       data.push({
         title: key,
-        description: value.description,
+        level: value.level,
+        pax: value.pax,
         noBusinessDate: [],
         businessHours: getBusinessHours(),
         schedule: value.schedule,

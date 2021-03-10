@@ -905,7 +905,7 @@ export const vueSchedulerLite = {
           >
             <div style="cursor: pointer; height: 64px">
               <span style="font-size: 16px; margin-top: -4px; font-weight: bold;">{{ row.title }}</span>
-              <span style="font-size: 12px; margin-top: -32px; font-weight: normal;">Level {{row.description.level}}, Max Pax: {{row.description.pax}}</span>
+              <span style="font-size: 12px; margin-top: -32px; font-weight: normal;">Level {{row.level}}, Max Pax: {{row.pax}}</span>
             </div>
           </div>
         </div>
