@@ -6,7 +6,7 @@
 //  * @see https://github.com/linmasahiro/vue-scheduler-lite
 //  */
 //
-import helper from 'assets/js/helper'
+import helper from '@/assets/js/helper'
 
 const businessHours = [{
   start: '00:00',

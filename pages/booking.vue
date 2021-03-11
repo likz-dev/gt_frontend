@@ -14,6 +14,7 @@
     <v-row style="margin-top: 16px">
       <v-col cols="6">
         <v-text-field
+          id="gt-booking-name-field"
           v-model="bookingName"
           label="Meeting Name"
           outlined
@@ -22,6 +23,7 @@
       </v-col>
       <v-col cols="6">
         <v-text-field
+          id="gt-meeting-room-field"
           v-model="selectedMeetingRoom"
           label="Meeting Room"
           readonly
@@ -32,6 +34,7 @@
     <v-row style="margin-top: -32px">
       <v-col cols="6">
         <v-text-field
+          id="gt-booking-time-field"
           v-model="bookingTimeString"
           label="Time"
           readonly
@@ -41,7 +44,7 @@
     </v-row>
     <v-row>
       <v-col cols="12" align-self="end" style="margin-top: -32px">
-        <v-btn color="primary" style="float: right">
+        <v-btn color="primary" style="float: right" id="gt-submit-button">
           Submit
         </v-btn>
       </v-col>
@@ -52,11 +55,11 @@
   </v-container>
 </template>
 <script>
-import { vueSchedulerLite } from 'assets/js/vue-scheduler-lite'
-import schedulerHelper from 'assets/js/scheduler_helper'
-import api from 'assets/js/api'
-import helper from 'assets/js/helper'
-import GtLoader from '~/components/GtLoader.vue'
+import { vueSchedulerLite } from '@/assets/js/vue-scheduler-lite'
+import schedulerHelper from '@/assets/js/scheduler_helper'
+import api from '@/assets/js/api'
+import helper from '@/assets/js/helper'
+import GtLoader from '@/components/GtLoader.vue'
 
 export default {
   components: {
@@ -70,50 +73,7 @@ export default {
       meetingRooms: [],
       bookingName: '',
       bookingTimeString: '',
-      selectedMeetingRoom: '',
-      apiResponse: {
-        startDate: '2021/03/09',
-        endDate: '2021/03/15',
-        facilities: {
-          Novena: {
-            level: 1,
-            pax: 4,
-            schedule: [{
-              text: 'Mr.A reserved',
-              start: '2021/03/09 18:00',
-              end: '2021/03/09 20:00',
-              isMe: false
-            },
-            {
-              text: 'Mr.B reserved',
-              start: '2021/03/10 15:00',
-              end: '2021/03/10 17:00',
-              isMe: false
-            }
-            ]
-          },
-          'Dhoby Ghaut': {
-            level: 1,
-            pax: 1,
-            schedule: [{
-              text: 'Mr.C reserved',
-              start: '2021/03/9 12:00',
-              end: '2021/03/9 17:00',
-              isMe: false
-            }]
-          },
-          Marina: {
-            level: 1,
-            pax: 8,
-            schedule: [{
-              text: 'Mr.D reserved',
-              start: '2021/03/10 12:00',
-              end: '2021/03/10 18:00',
-              isMe: false
-            }]
-          }
-        }
-      }
+      selectedMeetingRoom: ''
     }
   },
   computed: {
@@ -122,7 +82,6 @@ export default {
     }
   },
   created () {
-    this.getAllFacilities()
   },
   mounted () {
     console.log('mounted')
@@ -130,6 +89,8 @@ export default {
     const polyfillScript = document.createElement('script')
     polyfillScript.setAttribute('src', 'polyfill.js')
     document.head.appendChild(polyfillScript)
+
+    this.getAllFacilities()
   },
   methods: {
     getAllFacilities () {
