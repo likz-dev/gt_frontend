@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container v-if="scDataLoaded">
     <vue-scheduler-lite
       :schedule-data="scData"
       :setting="scSetting"
@@ -47,14 +47,21 @@
       </v-col>
     </v-row>
   </v-container>
+  <v-container v-else>
+    <gt-loader />
+  </v-container>
 </template>
 <script>
 import { vueSchedulerLite } from 'assets/js/vue-scheduler-lite'
 import schedulerHelper from 'assets/js/scheduler_helper'
+import api from 'assets/js/api'
+import helper from 'assets/js/helper'
+import GtLoader from '~/components/GtLoader.vue'
 
 export default {
   components: {
-    vueSchedulerLite
+    vueSchedulerLite,
+    GtLoader
   },
   data () {
     return {
@@ -109,16 +116,32 @@ export default {
       }
     }
   },
+  computed: {
+    scDataLoaded () {
+      return !helper.arrayEmpty(this.scData)
+    }
+  },
   created () {
-    this.populateFacilities(this.apiResponse)
+    this.getAllFacilities()
   },
   mounted () {
+    console.log('mounted')
     // Mount the required javascript file for scheduler
     const polyfillScript = document.createElement('script')
     polyfillScript.setAttribute('src', 'polyfill.js')
     document.head.appendChild(polyfillScript)
   },
   methods: {
+    getAllFacilities () {
+      api.get('/facility/all').then((response) => {
+        if (response.success) {
+          console.log(response)
+          this.populateFacilities(response.data)
+        } else {
+          console.log(response)
+        }
+      })
+    },
     populateFacilities (apiResponse) {
       this.scData = schedulerHelper.getSchedulerData(apiResponse)
       this.scSetting = schedulerHelper.getSchedulerSettings(apiResponse)
