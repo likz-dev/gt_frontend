@@ -1,25 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="3" failures="1" errors="0" time="6.747">
-  <testsuite name="Logo" errors="0" failures="0" skipped="0" timestamp="2021-03-08T10:18:13" time="1.936" tests="1">
-    <testcase classname="Logo is a Vue instance" name="Logo is a Vue instance" time="0.016">
+<testsuites name="jest tests" tests="7" failures="0" errors="0" time="7.845">
+  <testsuite name="Logo" errors="0" failures="0" skipped="0" timestamp="2021-03-11T13:46:50" time="2.718" tests="1">
+    <testcase classname="Logo is a Vue instance" name="Logo is a Vue instance" time="0.038">
     </testcase>
   </testsuite>
-  <testsuite name="FacilitiesScheduler" errors="0" failures="1" skipped="0" timestamp="2021-03-08T10:18:13" time="2.827" tests="2">
-    <testcase classname="FacilitiesScheduler is a Vue instance" name="FacilitiesScheduler is a Vue instance" time="0.526">
+  <testsuite name="Booking page" errors="0" failures="0" skipped="0" timestamp="2021-03-11T13:46:50" time="3.621" tests="4">
+    <testcase classname="Booking page is a Vue instance" name="Booking page is a Vue instance" time="0.054">
     </testcase>
-    <testcase classname="FacilitiesScheduler parses cells correctly" name="FacilitiesScheduler parses cells correctly" time="0.44">
-      <failure>Error: expect(received).toHaveLength(expected)
-
-Expected length: 3
-Received length: 6
-Received object: {&quot;selector&quot;: &quot;.title&quot;}
-    at Object.&lt;anonymous&gt; (/Users/likz/GovTech/gt_frontend/test/VueSchedulerLite.spec.js:33:29)
-    at Object.asyncJestTest (/Users/likz/GovTech/gt_frontend/node_modules/jest-jasmine2/build/jasmineAsyncInstall.js:106:37)
-    at /Users/likz/GovTech/gt_frontend/node_modules/jest-jasmine2/build/queueRunner.js:45:12
-    at new Promise (&lt;anonymous&gt;)
-    at mapper (/Users/likz/GovTech/gt_frontend/node_modules/jest-jasmine2/build/queueRunner.js:28:19)
-    at /Users/likz/GovTech/gt_frontend/node_modules/jest-jasmine2/build/queueRunner.js:75:41
-    at processTicksAndRejections (internal/process/task_queues.js:93:5)</failure>
+    <testcase classname="Booking page contains the right components" name="Booking page contains the right components" time="0.041">
+    </testcase>
+    <testcase classname="Booking page parses api response correctly" name="Booking page parses api response correctly" time="0.027">
+    </testcase>
+    <testcase classname="Booking page emit addEvent" name="Booking page emit addEvent" time="0.023">
+    </testcase>
+  </testsuite>
+  <testsuite name="FacilitiesScheduler" errors="0" failures="0" skipped="0" timestamp="2021-03-11T13:46:50" time="3.817" tests="2">
+    <testcase classname="FacilitiesScheduler is a Vue instance" name="FacilitiesScheduler is a Vue instance" time="0.66">
+    </testcase>
+    <testcase classname="FacilitiesScheduler parses cells correctly" name="FacilitiesScheduler parses cells correctly" time="0.399">
     </testcase>
   </testsuite>
 </testsuites>

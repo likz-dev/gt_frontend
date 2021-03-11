@@ -55,7 +55,7 @@ describe('Booking page', () => {
 
     jest
       .useFakeTimers('modern')
-      .setSystemTime(new Date('2021-03-11').getTime())
+      .setSystemTime(new Date('2021-03-11 08:00').getTime())
 
     jest.spyOn(api, 'get').mockImplementation(() => Promise.resolve({
       success: true,

@@ -9,7 +9,7 @@
       @delete-event="deleteEvent"
     />
 
-    <v-divider />
+    <v-divider/>
 
     <v-row style="margin-top: 16px">
       <v-col cols="6">
@@ -44,14 +44,14 @@
     </v-row>
     <v-row>
       <v-col cols="12" align-self="end" style="margin-top: -32px">
-        <v-btn color="primary" style="float: right" id="gt-submit-button">
+        <v-btn id="gt-submit-button" color="primary" style="float: right">
           Submit
         </v-btn>
       </v-col>
     </v-row>
   </v-container>
   <v-container v-else>
-    <gt-loader />
+    <gt-loader/>
   </v-container>
 </template>
 <script>
@@ -72,6 +72,8 @@ export default {
       scSetting: {},
       meetingRooms: [],
       bookingName: '',
+      startTimeString: '',
+      endTimeString: '',
       bookingTimeString: '',
       selectedMeetingRoom: ''
     }
@@ -102,6 +104,24 @@ export default {
           console.log(response)
         }
       })
+    },
+    makeBooking () {
+      api.post('facility', this.parseRequest()).then((response) => {
+        if (response.success) {
+          console.log('success')
+        } else {
+          console.log(response)
+        }
+      })
+    },
+    parseRequest () {
+      return {
+        booking_name: this.bookingName,
+        start_time: this.startTimeString,
+        end_time: this.endTimeString,
+        facility_id: this.scData.facilities[this.selectedMeetingRoom].facilityId,
+        booked_by: 'likz'
+      }
     },
     populateFacilities (apiResponse) {
       this.scData = schedulerHelper.getSchedulerData(apiResponse)
@@ -136,7 +156,8 @@ export default {
       console.log('RowIndex:' + rowIndex)
       console.log('StartDate:' + startDate)
       console.log('EndDate:' + endDate)
-
+      this.startTimeString = startDate
+      this.endTimestring = endDate
       this.bookingTimeString = `${startDate} to ${endDate}`
       this.selectedMeetingRoom = this.meetingRooms[rowIndex]
     },
@@ -152,6 +173,8 @@ export default {
       } else {
         console.log('Not businessDay, can\'t move.')
       }
+      this.startTimeString = newStartDate
+      this.endTimestring = newEndDate
       this.bookingTimeString = `${newStartDate} to ${newEndDate}`
       this.selectedMeetingRoom = this.meetingRooms[rowIndex]
     },
@@ -160,6 +183,8 @@ export default {
       console.log('EditEvent:')
       console.log('NewStartDate:' + newStartDate)
       console.log('NewEndDate:' + newEndDate)
+      this.startTimeString = newStartDate
+      this.endTimestring = newEndDate
       this.bookingTimeString = `${newStartDate} to ${newEndDate}`
     },
     deleteEvent (row, index) {
@@ -167,6 +192,8 @@ export default {
       console.log('DeleteEvent:')
       console.log('Row:' + row)
       console.log('Index:' + index)
+      this.startTimeString = ''
+      this.endTimestring = ''
       this.bookingTimeString = ''
       this.selectedMeetingRoom = ''
     }
