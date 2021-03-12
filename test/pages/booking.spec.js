@@ -109,4 +109,53 @@ describe('Booking page', () => {
     expect(wrapper.vm.$data.bookingTimeString).toBe('2020/01/01 00:00:00 to 2020/01/01/ 01:00:00')
     expect(wrapper.vm.$data.selectedMeetingRoom).toBe('Dhoby Ghaut')
   })
+
+  test('emit moveEvent', () => {
+    wrapper.vm.moveEvent(0, 1, '2020/01/01 00:00:00', '2020/01/01/ 01:00:00')
+    expect(wrapper.vm.$data.bookingTimeString).toBe('2020/01/01 00:00:00 to 2020/01/01/ 01:00:00')
+    expect(wrapper.vm.$data.selectedMeetingRoom).toBe('Dhoby Ghaut')
+  })
+
+  test('emit editEvent', () => {
+    wrapper.vm.editEvent('2020/01/01 00:00:00', '2020/01/01/ 01:00:00')
+    expect(wrapper.vm.$data.bookingTimeString).toBe('2020/01/01 00:00:00 to 2020/01/01/ 01:00:00')
+  })
+
+  test('emit deleteEvent', () => {
+    wrapper.vm.deleteEvent()
+    expect(wrapper.vm.$data.bookingTimeString).toBe('')
+  })
+
+  test('validate success', () => {
+    wrapper.vm.$data.selectedMeetingRoom = 'test'
+    expect(wrapper.vm.validate()).toBeTruthy()
+  })
+
+  test('validate failure', () => {
+    wrapper.vm.$data.selectedMeetingRoom = ''
+    expect(wrapper.vm.validate()).toBeFalsy()
+    expect(wrapper.vm.$data.errorMessage).toBe('Please select a booking slot')
+  })
+
+  test('parses form correctly', () => {
+    wrapper.vm.$data.bookingName = 'booking1'
+    wrapper.vm.$data.startTime = '2021/03/12 11:00:00'
+    wrapper.vm.$data.endTime = '2021/03/12 13:00:00'
+    wrapper.vm.$data.apiResponse = {
+      facilities: {
+        room1: {
+          facilityId: 1
+        }
+      }
+    }
+    wrapper.vm.$data.selectedMeetingRoom = 'room1'
+
+    expect(wrapper.vm.parseRequest()).toStrictEqual({
+      booked_by: 'likz',
+      booking_name: 'booking1',
+      end_time: '2021/03/12 13:00:00',
+      facility_id: 1,
+      start_time: '2021/03/12 11:00:00'
+    })
+  })
 })

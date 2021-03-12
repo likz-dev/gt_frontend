@@ -43,8 +43,13 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-col cols="12" align-self="end" style="margin-top: -32px">
-        <v-btn id="gt-submit-button" color="primary" style="float: right">
+      <v-col v-if="errorMessage !== ''" style="margin-top: -32px">
+        <span style="color: #a01f1f">
+        {{ this.errorMessage }}
+        </span>
+      </v-col>
+      <v-col cols="12" align-self="end" style="margin-top: -24px">
+        <v-btn id="gt-submit-button" color="primary" style="float: right" @click="makeBooking" :loading="isSubmitting">
           Submit
         </v-btn>
       </v-col>
@@ -68,22 +73,23 @@ export default {
   },
   data () {
     return {
+      apiResponse: {},
       scData: [],
       scSetting: {},
       meetingRooms: [],
       bookingName: '',
-      startTimeString: '',
-      endTimeString: '',
+      startTime: '',
+      endTime: '',
       bookingTimeString: '',
-      selectedMeetingRoom: ''
+      selectedMeetingRoom: '',
+      errorMessage: '',
+      isSubmitting: false
     }
   },
   computed: {
     scDataLoaded () {
       return !helper.arrayEmpty(this.scData)
     }
-  },
-  created () {
   },
   mounted () {
     console.log('mounted')
@@ -99,6 +105,7 @@ export default {
       api.get('/facility/all').then((response) => {
         if (response.success) {
           console.log(response)
+          this.apiResponse = response.data
           this.populateFacilities(response.data)
         } else {
           console.log(response)
@@ -106,20 +113,32 @@ export default {
       })
     },
     makeBooking () {
-      api.post('facility', this.parseRequest()).then((response) => {
-        if (response.success) {
-          console.log('success')
-        } else {
-          console.log(response)
-        }
-      })
+      if (this.validate()) {
+        this.isSubmitting = true
+        api.post('/book', this.parseRequest()).then((response) => {
+          if (response.success) {
+            console.log('success')
+            this.$router.go()
+          } else {
+            console.log(response)
+          }
+          this.isSubmitting = false
+        })
+      }
+    },
+    validate () {
+      if (helper.nullUndefinedOrBlank(this.selectedMeetingRoom)) {
+        this.errorMessage = 'Please select a booking slot'
+        return false
+      }
+      return true
     },
     parseRequest () {
       return {
         booking_name: this.bookingName,
-        start_time: this.startTimeString,
-        end_time: this.endTimeString,
-        facility_id: this.scData.facilities[this.selectedMeetingRoom].facilityId,
+        start_time: this.startTime,
+        end_time: this.endTime,
+        facility_id: this.apiResponse.facilities[this.selectedMeetingRoom].facilityId,
         booked_by: 'likz'
       }
     },
@@ -128,74 +147,30 @@ export default {
       this.scSetting = schedulerHelper.getSchedulerSettings(apiResponse)
       this.meetingRooms = Object.keys(apiResponse.facilities)
     },
-    dateClickEvent (date) {
-      console.log('------')
-      console.log('DateClickEvent:')
-      console.log('Date:' + date)
+    formatTimeField (startTime, endTime) {
+      this.startTime = startTime
+      this.endTime = endTime
+      this.bookingTimeString = `${startTime} to ${endTime}`
     },
-    rowClickEvent (rowIndex, text) {
-      console.log('------')
-      console.log('RowClickEvent:')
-      console.log('RowIndex:' + rowIndex)
-      console.log('RowTitle:' + text)
-    },
-    clickEvent (startDate, endDate, text, other) {
-      console.log('------')
-      console.log('ClickEvent:')
-      console.log('StartDate:' + startDate)
-      console.log('EndDate:' + endDate)
-      console.log('ContentText:' + text)
-      if (other) {
-        console.log('OtherData:')
-        console.log(other)
-      }
-    },
-    addEvent (rowIndex, startDate, endDate) {
-      console.log('------')
-      console.log('AddEvent:')
-      console.log('RowIndex:' + rowIndex)
-      console.log('StartDate:' + startDate)
-      console.log('EndDate:' + endDate)
-      this.startTimeString = startDate
-      this.endTimestring = endDate
-      this.bookingTimeString = `${startDate} to ${endDate}`
+    addEvent (rowIndex, startTime, endTime) {
+      this.formatTimeField(startTime, endTime)
       this.selectedMeetingRoom = this.meetingRooms[rowIndex]
     },
-    moveEvent (status, rowIndex, newStartDate, newEndDate) {
-      console.log('------')
-      console.log('MoveEvent:')
-      if (status === 1) {
-        console.log('rowIndex:' + rowIndex)
-        console.log('NewStartDate:' + newStartDate)
-        console.log('NewEndDate:' + newEndDate)
-      } else if (status === 2) {
-        console.log('Has other event, can\'t move.')
-      } else {
-        console.log('Not businessDay, can\'t move.')
-      }
-      this.startTimeString = newStartDate
-      this.endTimestring = newEndDate
-      this.bookingTimeString = `${newStartDate} to ${newEndDate}`
+    moveEvent (status, rowIndex, startTime, endTime) {
+      this.formatTimeField(startTime, endTime)
       this.selectedMeetingRoom = this.meetingRooms[rowIndex]
     },
-    editEvent (newStartDate, newEndDate) {
-      console.log('------')
-      console.log('EditEvent:')
-      console.log('NewStartDate:' + newStartDate)
-      console.log('NewEndDate:' + newEndDate)
-      this.startTimeString = newStartDate
-      this.endTimestring = newEndDate
-      this.bookingTimeString = `${newStartDate} to ${newEndDate}`
+    editEvent (startTime, endTime) {
+      this.formatTimeField(startTime, endTime)
     },
-    deleteEvent (row, index) {
-      console.log('------')
-      console.log('DeleteEvent:')
-      console.log('Row:' + row)
-      console.log('Index:' + index)
-      this.startTimeString = ''
-      this.endTimestring = ''
+    deleteEvent () {
+      this.startTime = ''
+      this.endTime = ''
       this.bookingTimeString = ''
       this.selectedMeetingRoom = ''
+    },
+    clearErrors () {
+      this.errorMessage = ''
     }
   }
 }
@@ -259,9 +234,11 @@ export default {
   background: #ff4800;
   cursor: pointer;
   z-index: 10;
-  box-shadow: 1px 1px 1px #333;
-  -moz-box-shadow: 1px 1px 1px #333;
-  -webkit-box-shadow: 1px 1px 1px #333;
+  border-bottom: 1px solid #333;
+  border-right: 1px solid rgba(48, 48, 48, 0.5);
+  box-shadow: 0 1px 1px #333;
+  -moz-box-shadow: 0 1px 1px #333;
+  -webkit-box-shadow: 0 1px 1px #333;
 }
 
 .schedule .ui-draggable-dragging,
@@ -340,7 +317,7 @@ export default {
 }
 
 .schedule .cant-res {
-  background-color: #ff7a7a !important;
+  background-color: #919191 !important;
 }
 
 .schedule .isMe {
@@ -348,7 +325,7 @@ export default {
 }
 
 .schedule .notMe {
-  background-color: #5d5d5d !important;
+  background-color: #cb6f6f !important;
 }
 
 .schedule .newAdd {
