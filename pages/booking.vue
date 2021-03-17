@@ -115,7 +115,7 @@ export default {
 
       if (helper.nullUndefinedOrBlank(token)) {
         console.log('token is empty')
-        this.$router.push('/')
+        location.replace('http://gt-pi-loadb-uvdhlamggmba-1268143812.us-east-1.elb.amazonaws.com/login')
       }
       api.setToken(token)
     },
@@ -132,7 +132,7 @@ export default {
           console.log('failed')
           console.log(response)
           if (response.data.code === 'token_expired') {
-            this.$router.push('/')
+            location.replace('http://gt-pi-loadb-uvdhlamggmba-1268143812.us-east-1.elb.amazonaws.com/login')
           }
         }
       })
@@ -147,7 +147,7 @@ export default {
           } else {
             console.log(response)
             if (response.data.code === 'token_expired') {
-              this.$router.push('/')
+              location.replace('http://gt-pi-loadb-uvdhlamggmba-1268143812.us-east-1.elb.amazonaws.com/login')
             }
           }
           this.isSubmitting = false
