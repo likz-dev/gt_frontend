@@ -106,6 +106,7 @@ export default {
   methods: {
     setToken () {
       let token = this.$route.query.token
+      console.log(`token is ${token}`)
       if (helper.nullUndefinedOrBlank(token)) {
         token = this.$auth.$storage.getLocalStorage('token')
       } else {
@@ -113,17 +114,22 @@ export default {
       }
 
       if (helper.nullUndefinedOrBlank(token)) {
+        console.log('token is empty')
         this.$router.push('/')
       }
       api.setToken(token)
     },
     getAllFacilities () {
+      console.log('getAllFacilities()')
       api.get('/facility/all').then((response) => {
         if (response.success) {
+          console.log(response)
+          console.log('success')
           console.log(response)
           this.apiResponse = response.data
           this.populateFacilities(response.data)
         } else {
+          console.log('failed')
           console.log(response)
           if (response.data.code === 'token_expired') {
             this.$router.push('/')

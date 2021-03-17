@@ -84,6 +84,9 @@ export default {
   components: {
     Logo,
     VuetifyLogo
+  },
+  mounted () {
+    location.replace('http://gt-pi-loadb-uvdhlamggmba-1268143812.us-east-1.elb.amazonaws.com/login')
   }
 }
 </script>

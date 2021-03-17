@@ -13,6 +13,7 @@ const api = {
         url: `${BASE_URL}${url}`,
         headers
       }, config)
+      console.log(actionObj)
       axios(actionObj)
         .then((response) => {
           resolve(Object.assign({ success: true }, response))
@@ -25,6 +26,7 @@ const api = {
   },
 
   setToken (token) {
+    console.log(`settings api token is ${token}`)
     headers = {
       Authorization: `Bearer ${token}`,
       'Content-Type': 'application/json'
