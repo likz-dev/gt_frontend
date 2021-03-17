@@ -106,11 +106,14 @@ export default {
   methods: {
     setToken () {
       let token = this.$route.query.token
-      console.log(`token is ${token}`)
+      let email = this.$route.query.email
+
       if (helper.nullUndefinedOrBlank(token)) {
         token = this.$auth.$storage.getLocalStorage('token')
+        email = this.$auth.$storage.getLocalStorage('email')
       } else {
         this.$auth.$storage.setLocalStorage('token', token)
+        this.$auth.$storage.setLocalStorage('email', email)
       }
 
       if (helper.nullUndefinedOrBlank(token)) {
@@ -123,13 +126,9 @@ export default {
       console.log('getAllFacilities()')
       api.get('/facility/all').then((response) => {
         if (response.success) {
-          console.log(response)
-          console.log('success')
-          console.log(response)
           this.apiResponse = response.data
           this.populateFacilities(response.data)
         } else {
-          console.log('failed')
           console.log(response)
           if (response.data.code === 'token_expired') {
             location.replace('http://gt-pi-loadb-uvdhlamggmba-1268143812.us-east-1.elb.amazonaws.com/login')
@@ -167,7 +166,7 @@ export default {
         start_time: this.startTime,
         end_time: this.endTime,
         facility_id: this.apiResponse.facilities[this.selectedMeetingRoom].facilityId,
-        booked_by: 'likz'
+        booked_by: this.$auth.$storage.getLocalStorage('email')
       }
     },
     populateFacilities (apiResponse) {

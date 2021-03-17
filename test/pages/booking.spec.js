@@ -1,6 +1,5 @@
 import { shallowMount } from '@vue/test-utils'
 import booking from '@/pages/booking.vue'
-import index from '@/pages/index.vue'
 import api from '@/assets/js/api'
 
 const sampleAPIResponse = {
@@ -50,14 +49,17 @@ const sampleAPIResponse = {
 const $route = {
   path: '/',
   query: {
-    token: 'sample_token'
+    token: 'sample_token',
+    email: 'likz'
   }
 }
 
 const $auth = {
   $storage: {
     getLocalStorage (key) {
-
+      if (key === 'email') {
+        return 'likz'
+      }
     },
     setLocalStorage (key, val) {
 
@@ -295,10 +297,16 @@ describe('Booking page', () => {
   })
 
   test('no token - redirect to homepage', () => {
+    const { location } = window
+
+    delete window.location
+    window.location = { replace: jest.fn() }
+
     const $route = {
       path: '/',
       query: {
-        token: ''
+        token: '',
+        email: ''
       }
     }
 
@@ -311,21 +319,12 @@ describe('Booking page', () => {
       }
     })
 
-    expect($router.push).toBeCalledWith('/')
+    expect(window.location.replace).toHaveBeenCalled()
   })
 })
 
 describe('API', () => {
   test('token expired', () => {
-    shallowMount(booking, {
-      propsData: {},
-      mocks: {
-        $route,
-        $auth,
-        $router
-      }
-    })
-
     jest
       .useFakeTimers('modern')
       .setSystemTime(new Date('2021-03-11 08:00').getTime())
@@ -338,6 +337,17 @@ describe('API', () => {
       }
     }))
 
-    expect($router.push).toBeCalledWith('/')
+    shallowMount(booking, {
+      propsData: {},
+      mocks: {
+        $route,
+        $auth,
+        $router
+      }
+    })
+
+    expect(window.location.replace).toHaveBeenCalled()
+
+    window.location = location
   })
 })
