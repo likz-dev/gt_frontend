@@ -1,5 +1,6 @@
 import { shallowMount } from '@vue/test-utils'
 import booking from '@/pages/booking.vue'
+import index from '@/pages/index.vue'
 import api from '@/assets/js/api'
 
 const sampleAPIResponse = {
@@ -46,11 +47,38 @@ const sampleAPIResponse = {
   }
 }
 
+const $route = {
+  path: '/',
+  query: {
+    token: 'sample_token'
+  }
+}
+
+const $auth = {
+  $storage: {
+    getLocalStorage (key) {
+
+    },
+    setLocalStorage (key, val) {
+
+    }
+  }
+}
+
+const $router = {
+  push: jest.fn()
+}
+
 describe('Booking page', () => {
   let wrapper
   beforeEach(() => {
     wrapper = shallowMount(booking, {
-      propsData: {}
+      propsData: {},
+      mocks: {
+        $route,
+        $auth,
+        $router
+      }
     })
 
     jest
@@ -76,7 +104,114 @@ describe('Booking page', () => {
   })
 
   test('parses api response correctly', () => {
-    expect(wrapper.vm.$data.scData).toStrictEqual([{ businessHours: [{ end: '24:00', start: '00:00' }, { end: '24:00', start: '00:00' }, { end: '24:00', start: '00:00' }, { end: '24:00', start: '00:00' }, { end: '24:00', start: '8:0' }, { end: '24:00', start: '00:00' }, { end: '24:00', start: '00:00' }], data: { something: 'something' }, level: 1, noBusinessDate: [], pax: 4, schedule: [{ end: '2021/03/09 20:00', isMe: false, start: '2021/03/09 18:00', text: 'Mr.A reserved' }, { end: '2021/03/10 17:00', isMe: false, start: '2021/03/10 15:00', text: 'Mr.B reserved' }], title: 'Novena' }, { businessHours: [{ end: '24:00', start: '00:00' }, { end: '24:00', start: '00:00' }, { end: '24:00', start: '00:00' }, { end: '24:00', start: '00:00' }, { end: '24:00', start: '8:0' }, { end: '24:00', start: '00:00' }, { end: '24:00', start: '00:00' }], data: { something: 'something' }, level: 1, noBusinessDate: [], pax: 1, schedule: [{ end: '2021/03/9 17:00', isMe: false, start: '2021/03/9 12:00', text: 'Mr.C reserved' }], title: 'Dhoby Ghaut' }, { businessHours: [{ end: '24:00', start: '00:00' }, { end: '24:00', start: '00:00' }, { end: '24:00', start: '00:00' }, { end: '24:00', start: '00:00' }, { end: '24:00', start: '8:0' }, { end: '24:00', start: '00:00' }, { end: '24:00', start: '00:00' }], data: { something: 'something' }, level: 1, noBusinessDate: [], pax: 8, schedule: [{ end: '2021/03/10 18:00', isMe: false, start: '2021/03/10 12:00', text: 'Mr.D reserved' }], title: 'Marina' }])
+    expect(wrapper.vm.$data.scData).toStrictEqual([{
+      businessHours: [{
+        end: '24:00',
+        start: '00:00'
+      }, {
+        end: '24:00',
+        start: '00:00'
+      }, {
+        end: '24:00',
+        start: '00:00'
+      }, {
+        end: '24:00',
+        start: '00:00'
+      }, {
+        end: '24:00',
+        start: '8:0'
+      }, {
+        end: '24:00',
+        start: '00:00'
+      }, {
+        end: '24:00',
+        start: '00:00'
+      }],
+      data: { something: 'something' },
+      level: 1,
+      noBusinessDate: [],
+      pax: 4,
+      schedule: [{
+        end: '2021/03/09 20:00',
+        isMe: false,
+        start: '2021/03/09 18:00',
+        text: 'Mr.A reserved'
+      }, {
+        end: '2021/03/10 17:00',
+        isMe: false,
+        start: '2021/03/10 15:00',
+        text: 'Mr.B reserved'
+      }],
+      title: 'Novena'
+    }, {
+      businessHours: [{
+        end: '24:00',
+        start: '00:00'
+      }, {
+        end: '24:00',
+        start: '00:00'
+      }, {
+        end: '24:00',
+        start: '00:00'
+      }, {
+        end: '24:00',
+        start: '00:00'
+      }, {
+        end: '24:00',
+        start: '8:0'
+      }, {
+        end: '24:00',
+        start: '00:00'
+      }, {
+        end: '24:00',
+        start: '00:00'
+      }],
+      data: { something: 'something' },
+      level: 1,
+      noBusinessDate: [],
+      pax: 1,
+      schedule: [{
+        end: '2021/03/9 17:00',
+        isMe: false,
+        start: '2021/03/9 12:00',
+        text: 'Mr.C reserved'
+      }],
+      title: 'Dhoby Ghaut'
+    }, {
+      businessHours: [{
+        end: '24:00',
+        start: '00:00'
+      }, {
+        end: '24:00',
+        start: '00:00'
+      }, {
+        end: '24:00',
+        start: '00:00'
+      }, {
+        end: '24:00',
+        start: '00:00'
+      }, {
+        end: '24:00',
+        start: '8:0'
+      }, {
+        end: '24:00',
+        start: '00:00'
+      }, {
+        end: '24:00',
+        start: '00:00'
+      }],
+      data: { something: 'something' },
+      level: 1,
+      noBusinessDate: [],
+      pax: 8,
+      schedule: [{
+        end: '2021/03/10 18:00',
+        isMe: false,
+        start: '2021/03/10 12:00',
+        text: 'Mr.D reserved'
+      }],
+      title: 'Marina'
+    }])
     expect(wrapper.vm.$data.scSetting).toStrictEqual({
       borderW: 1,
       dateDivH: 25,
@@ -157,5 +292,52 @@ describe('Booking page', () => {
       facility_id: 1,
       start_time: '2021/03/12 11:00:00'
     })
+  })
+
+  test('no token - redirect to homepage', () => {
+    const $route = {
+      path: '/',
+      query: {
+        token: ''
+      }
+    }
+
+    wrapper = shallowMount(booking, {
+      propsData: {},
+      mocks: {
+        $route,
+        $auth,
+        $router
+      }
+    })
+
+    expect($router.push).toBeCalledWith('/')
+  })
+})
+
+describe('API', () => {
+  test('token expired', () => {
+    shallowMount(booking, {
+      propsData: {},
+      mocks: {
+        $route,
+        $auth,
+        $router
+      }
+    })
+
+    jest
+      .useFakeTimers('modern')
+      .setSystemTime(new Date('2021-03-11 08:00').getTime())
+
+    jest.spyOn(api, 'get').mockImplementation(() => Promise.resolve({
+      success: false,
+      data: {
+        code: 'token_expired',
+        description: 'token is expired'
+      }
+    }))
+
+    expect($router.push).toBeCalledWith('/')
   })
 })

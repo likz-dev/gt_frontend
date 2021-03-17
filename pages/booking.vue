@@ -93,6 +93,9 @@ export default {
   },
   mounted () {
     console.log('mounted')
+    this.setToken()
+    // console.log(this.$auth.$storage.getLocalStorage('token'))
+
     // Mount the required javascript file for scheduler
     const polyfillScript = document.createElement('script')
     polyfillScript.setAttribute('src', 'polyfill.js')
@@ -101,6 +104,19 @@ export default {
     this.getAllFacilities()
   },
   methods: {
+    setToken () {
+      let token = this.$route.query.token
+      if (helper.nullUndefinedOrBlank(token)) {
+        token = this.$auth.$storage.getLocalStorage('token')
+      } else {
+        this.$auth.$storage.setLocalStorage('token', token)
+      }
+
+      if (helper.nullUndefinedOrBlank(token)) {
+        this.$router.push('/')
+      }
+      api.setToken(token)
+    },
     getAllFacilities () {
       api.get('/facility/all').then((response) => {
         if (response.success) {
@@ -109,6 +125,9 @@ export default {
           this.populateFacilities(response.data)
         } else {
           console.log(response)
+          if (response.data.code === 'token_expired') {
+            this.$router.push('/')
+          }
         }
       })
     },
@@ -121,6 +140,9 @@ export default {
             this.$router.go()
           } else {
             console.log(response)
+            if (response.data.code === 'token_expired') {
+              this.$router.push('/')
+            }
           }
           this.isSubmitting = false
         })

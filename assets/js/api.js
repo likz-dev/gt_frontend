@@ -1,7 +1,7 @@
 import axios from 'axios'
 
-const BASE_URL = 'http://localhost:5000'
-const headers = {
+const BASE_URL = 'http://gt-pi-loadb-uvdhlamggmba-1268143812.us-east-1.elb.amazonaws.com'
+let headers = {
   'Content-Type': 'application/json'
 }
 
@@ -22,6 +22,13 @@ const api = {
           resolve(Object.assign({ success: false }, err.response))
         })
     })
+  },
+
+  setToken (token) {
+    headers = {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    }
   },
 
   get (url, params = {}) {
