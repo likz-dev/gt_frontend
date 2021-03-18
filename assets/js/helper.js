@@ -10,6 +10,9 @@ const helper = {
 
   getCurrentTime () {
     const d = new Date()
+    if (d.getHours() < 10) {
+      return `0${d.getHours()}:${d.getMinutes()}`
+    }
     return `${d.getHours()}:${d.getMinutes()}`
   },
 

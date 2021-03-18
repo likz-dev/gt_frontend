@@ -71,6 +71,8 @@ const $router = {
   push: jest.fn()
 }
 
+const { location } = window
+
 describe('Booking page', () => {
   let wrapper
   beforeEach(() => {
@@ -103,6 +105,7 @@ describe('Booking page', () => {
     expect(wrapper.find('#gt-meeting-room-field')).toBeTruthy()
     expect(wrapper.find('#gt-booking-time-field')).toBeTruthy()
     expect(wrapper.find('#gt-submit-button')).toBeTruthy()
+    expect(wrapper.find('#gt-my-bookings')).toBeTruthy()
   })
 
   test('parses api response correctly', () => {
@@ -121,7 +124,7 @@ describe('Booking page', () => {
         start: '00:00'
       }, {
         end: '24:00',
-        start: '8:0'
+        start: '08:0'
       }, {
         end: '24:00',
         start: '00:00'
@@ -160,7 +163,7 @@ describe('Booking page', () => {
         start: '00:00'
       }, {
         end: '24:00',
-        start: '8:0'
+        start: '08:0'
       }, {
         end: '24:00',
         start: '00:00'
@@ -194,7 +197,7 @@ describe('Booking page', () => {
         start: '00:00'
       }, {
         end: '24:00',
-        start: '8:0'
+        start: '08:0'
       }, {
         end: '24:00',
         start: '00:00'
@@ -297,8 +300,6 @@ describe('Booking page', () => {
   })
 
   test('no token - redirect to homepage', () => {
-    const { location } = window
-
     delete window.location
     window.location = { replace: jest.fn() }
 

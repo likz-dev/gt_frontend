@@ -39,6 +39,10 @@ const api = {
 
   post (url, data) {
     return this.apiAction('post', url, { data })
+  },
+
+  delete (url, data) {
+    return this.apiAction('delete', url, { data })
   }
 }
 

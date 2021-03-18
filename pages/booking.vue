@@ -43,12 +43,22 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-col v-if="errorMessage !== ''" style="margin-top: -32px">
+      <v-col v-if="errorMessage !== ''" style="margin-top: -32px; margin-bottom: 16px">
         <span style="color: #a01f1f">
         {{ this.errorMessage }}
         </span>
       </v-col>
-      <v-col cols="12" align-self="end" style="margin-top: -24px">
+    </v-row>
+    <v-row>
+      <v-col cols="3" align-self="end" style="margin-top: -24px">
+        <v-btn id="gt-my-bookings" color="secondary" @click="goToBookings">
+          My Bookings
+        </v-btn>
+      </v-col>
+
+      <v-spacer/>
+
+      <v-col cols="3" align-self="end" style="margin-top: -24px">
         <v-btn id="gt-submit-button" color="primary" style="float: right" @click="makeBooking" :loading="isSubmitting">
           Submit
         </v-btn>
@@ -122,8 +132,10 @@ export default {
       }
       api.setToken(token)
     },
+    goToBookings () {
+      this.$router.push('/bookings')
+    },
     getAllFacilities () {
-      console.log('getAllFacilities()')
       api.get('/facility/all').then((response) => {
         if (response.success) {
           this.apiResponse = response.data
@@ -139,10 +151,10 @@ export default {
     makeBooking () {
       if (this.validate()) {
         this.isSubmitting = true
-        api.post('/book', this.parseRequest()).then((response) => {
+        api.post('/booking', this.parseRequest()).then((response) => {
           if (response.success) {
             console.log('success')
-            this.$router.go()
+            location.reload()
           } else {
             console.log(response)
             if (response.data.code === 'token_expired') {
@@ -172,6 +184,8 @@ export default {
     populateFacilities (apiResponse) {
       this.scData = schedulerHelper.getSchedulerData(apiResponse)
       this.scSetting = schedulerHelper.getSchedulerSettings(apiResponse)
+      console.log(this.scData)
+      console.log(this.scSetting)
       this.meetingRooms = Object.keys(apiResponse.facilities)
     },
     formatTimeField (startTime, endTime) {
