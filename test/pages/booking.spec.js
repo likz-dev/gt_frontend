@@ -74,7 +74,22 @@ const $router = {
 const { location } = window
 
 describe('Booking page', () => {
+  const oldLocation = window
+
   let wrapper
+
+  beforeAll(() => {
+    delete window.location
+    window.location = {
+      reload: jest.fn(),
+      replace: jest.fn()
+    }
+  })
+
+  afterAll(() => {
+    window.location = oldLocation
+  })
+
   beforeEach(() => {
     wrapper = shallowMount(booking, {
       propsData: {},
@@ -300,9 +315,6 @@ describe('Booking page', () => {
   })
 
   test('no token - redirect to homepage', () => {
-    delete window.location
-    window.location = { replace: jest.fn() }
-
     const $route = {
       path: '/',
       query: {
@@ -322,9 +334,7 @@ describe('Booking page', () => {
 
     expect(window.location.replace).toHaveBeenCalled()
   })
-})
 
-describe('API', () => {
   test('token expired', () => {
     jest
       .useFakeTimers('modern')
@@ -348,7 +358,5 @@ describe('API', () => {
     })
 
     expect(window.location.replace).toHaveBeenCalled()
-
-    window.location = location
   })
 })

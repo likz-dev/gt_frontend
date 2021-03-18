@@ -1,23 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="7" failures="0" errors="0" time="7.845">
-  <testsuite name="Logo" errors="0" failures="0" skipped="0" timestamp="2021-03-11T13:46:50" time="2.718" tests="1">
-    <testcase classname="Logo is a Vue instance" name="Logo is a Vue instance" time="0.038">
+<testsuites name="jest tests" tests="20" failures="1" errors="0" time="6.699">
+  <testsuite name="Logo" errors="0" failures="0" skipped="0" timestamp="2021-03-18T03:12:51" time="2.15" tests="1">
+    <testcase classname="Logo is a Vue instance" name="Logo is a Vue instance" time="0.021">
     </testcase>
   </testsuite>
-  <testsuite name="Booking page" errors="0" failures="0" skipped="0" timestamp="2021-03-11T13:46:50" time="3.621" tests="4">
-    <testcase classname="Booking page is a Vue instance" name="Booking page is a Vue instance" time="0.054">
+  <testsuite name="Bookings page" errors="0" failures="1" skipped="0" timestamp="2021-03-18T03:12:51" time="2.496" tests="5">
+    <testcase classname="Bookings page is a Vue instance" name="Bookings page is a Vue instance" time="0.084">
     </testcase>
-    <testcase classname="Booking page contains the right components" name="Booking page contains the right components" time="0.041">
+    <testcase classname="Bookings page parses api response correctly" name="Bookings page parses api response correctly" time="0.052">
     </testcase>
-    <testcase classname="Booking page parses api response correctly" name="Booking page parses api response correctly" time="0.027">
+    <testcase classname="Bookings page no token - redirect to homepage" name="Bookings page no token - redirect to homepage" time="0.099">
+      <failure>TypeError: expect(...).toHaveBeenCalpled is not a function
+    at Object.&lt;anonymous&gt; (/Users/likz/GovTech/gt_frontend/test/pages/bookings.spec.js:168:37)
+    at Object.asyncJestTest (/Users/likz/GovTech/gt_frontend/node_modules/jest-jasmine2/build/jasmineAsyncInstall.js:106:37)
+    at /Users/likz/GovTech/gt_frontend/node_modules/jest-jasmine2/build/queueRunner.js:45:12
+    at new Promise (&lt;anonymous&gt;)
+    at mapper (/Users/likz/GovTech/gt_frontend/node_modules/jest-jasmine2/build/queueRunner.js:28:19)
+    at /Users/likz/GovTech/gt_frontend/node_modules/jest-jasmine2/build/queueRunner.js:75:41
+    at processTicksAndRejections (internal/process/task_queues.js:93:5)</failure>
     </testcase>
-    <testcase classname="Booking page emit addEvent" name="Booking page emit addEvent" time="0.023">
+    <testcase classname="Bookings page deletes successfully" name="Bookings page deletes successfully" time="0.056">
+    </testcase>
+    <testcase classname="Bookings page delete failed" name="Bookings page delete failed" time="0.064">
     </testcase>
   </testsuite>
-  <testsuite name="FacilitiesScheduler" errors="0" failures="0" skipped="0" timestamp="2021-03-11T13:46:50" time="3.817" tests="2">
-    <testcase classname="FacilitiesScheduler is a Vue instance" name="FacilitiesScheduler is a Vue instance" time="0.66">
+  <testsuite name="FacilitiesScheduler" errors="0" failures="0" skipped="0" timestamp="2021-03-18T03:12:51" time="3.15" tests="2">
+    <testcase classname="FacilitiesScheduler is a Vue instance" name="FacilitiesScheduler is a Vue instance" time="0.81">
     </testcase>
-    <testcase classname="FacilitiesScheduler parses cells correctly" name="FacilitiesScheduler parses cells correctly" time="0.399">
+    <testcase classname="FacilitiesScheduler parses cells correctly" name="FacilitiesScheduler parses cells correctly" time="0.442">
+    </testcase>
+  </testsuite>
+  <testsuite name="Booking page" errors="0" failures="0" skipped="0" timestamp="2021-03-18T03:12:53" time="1.218" tests="12">
+    <testcase classname="Booking page is a Vue instance" name="Booking page is a Vue instance" time="0.039">
+    </testcase>
+    <testcase classname="Booking page contains the right components" name="Booking page contains the right components" time="0.031">
+    </testcase>
+    <testcase classname="Booking page parses api response correctly" name="Booking page parses api response correctly" time="0.035">
+    </testcase>
+    <testcase classname="Booking page emit addEvent" name="Booking page emit addEvent" time="0.019">
+    </testcase>
+    <testcase classname="Booking page emit moveEvent" name="Booking page emit moveEvent" time="0.025">
+    </testcase>
+    <testcase classname="Booking page emit editEvent" name="Booking page emit editEvent" time="0.017">
+    </testcase>
+    <testcase classname="Booking page emit deleteEvent" name="Booking page emit deleteEvent" time="0.015">
+    </testcase>
+    <testcase classname="Booking page validate success" name="Booking page validate success" time="0.016">
+    </testcase>
+    <testcase classname="Booking page validate failure" name="Booking page validate failure" time="0.021">
+    </testcase>
+    <testcase classname="Booking page parses form correctly" name="Booking page parses form correctly" time="0.018">
+    </testcase>
+    <testcase classname="Booking page no token - redirect to homepage" name="Booking page no token - redirect to homepage" time="0.025">
+    </testcase>
+    <testcase classname="Booking page token expired" name="Booking page token expired" time="0.019">
     </testcase>
   </testsuite>
 </testsuites>

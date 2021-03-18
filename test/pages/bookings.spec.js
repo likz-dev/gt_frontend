@@ -165,7 +165,7 @@ describe('Bookings page', () => {
       }
     })
 
-    expect(window.location.replace).toHaveBeenCalpled()
+    expect(window.location.replace).toHaveBeenCalled()
   })
 
   it('deletes successfully', async () => {

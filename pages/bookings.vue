@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <gt-loader v-if="!isBookingsLoaded || isDeleting" />
+    <gt-loader v-if="!isBookingsLoaded || isDeleting" name="loader" />
 
     <v-list
       v-else
